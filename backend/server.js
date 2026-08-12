@@ -79,7 +79,9 @@ async function startServer() {
   }
 }
 
-startServer();
+if (require.main === module) {
+  startServer();
+}
 
 // Export app for Vercel serverless
 module.exports = app;
