@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('./db');
 
 const notificationSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },

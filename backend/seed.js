@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('./models/db');
 const dotenv = require('dotenv');
 const bcrypt = require('bcryptjs');
 const User = require('./models/User');

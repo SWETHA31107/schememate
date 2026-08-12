@@ -1,9 +1,7 @@
 require('dotenv').config();
 
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
-const { MongoMemoryServer } = require('mongodb-memory-server');
 
 // Routes
 const authRoutes = require('./routes/authRoutes');
@@ -61,20 +59,18 @@ const PORT = process.env.PORT || 5000;
 // Start server
 async function startServer() {
   try {
-    // Create in-memory MongoDB
-    const mongoServer = await MongoMemoryServer.create();
+    console.log('Firebase initialized.');
 
-    // Get MongoDB connection URI
-    const MONGO_URI = mongoServer.getUri();
-
-    // Connect to MongoDB
-    await mongoose.connect(MONGO_URI);
-    console.log('Connected to In-Memory MongoDB');
-
-    // Seed fresh data
-    console.log('Seeding data...');
-    await seedData();
-    console.log('Seeding complete.');
+    // Seed fresh data if schemes are empty
+    const Scheme = require('./models/Scheme');
+    const existingSchemes = await Scheme.find({});
+    if (existingSchemes.length === 0) {
+      console.log('No schemes found. Seeding initial data...');
+      await seedData();
+      console.log('Seeding complete.');
+    } else {
+      console.log('Database already contains data. Skipping seeding.');
+    }
 
     // Start Express server
     app.listen(PORT, () => {
